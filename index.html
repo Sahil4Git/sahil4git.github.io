@@ -15,26 +15,28 @@
     --accent: rgba(255,160,145,0.95);
     --border-grad: linear-gradient(90deg,#a8c7f0,#fffdf7,#f7d9d0);
   }
-  html,body{height:100%;margin:0;font-family:'Inter',system-ui,Segoe UI,Roboto,Arial;background:var(--main-bg);color:#222;padding:10px;background:var(--border-grad)}
+  html,body{height:100%;margin:0;font-family:'Inter',system-ui,Segoe UI,Roboto,Arial;background:var(--main-bg);color:#222;padding:10px}
   .wrap{max-width:1200px;margin:18px auto;padding:18px;box-sizing:border-box;background:#fff;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.06)}
 
-  /* Hero section with welcome image */
+  /* Hero section redesigned to keep image intact and fill remaining space with border gradient */
   .hero{
-    position:relative;height:100vh;border-radius:18px;overflow:hidden;box-shadow:var(--card-shadow);
-    background:linear-gradient(0deg, rgba(0,0,0,0.25), rgba(0,0,0,0.25)), url('1.jpeg') center/cover no-repeat;
-    display:flex;align-items:center;justify-content:center;padding:36px;
+    position:relative;height:70vh;border-radius:18px;overflow:hidden;box-shadow:var(--card-shadow);
+    background:var(--border-grad);display:flex;align-items:center;justify-content:center;padding:36px;
   }
-  .hero::before{
-    content:"";position:absolute;inset:0;
-    background: radial-gradient(1200px 400px at 50% 30%, rgba(255,255,255,0.08), rgba(0,0,0,0.3));
-    mix-blend-mode:soft-light;pointer-events:none;
-  }
-  .hero-card{position:relative;z-index:2;max-width:820px;text-align:center;color:white;padding:28px;border-radius:14px;background:linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.28));backdrop-filter: blur(3px)}
-  .hero h1{font-family:'Great Vibes',cursive;font-size:56px;margin:0;line-height:0.9;text-shadow:0 8px 28px rgba(0,0,0,0.46)}
-  .hero .lead{font-family:'Playfair Display',serif;font-size:20px;margin-top:12px;opacity:0.95}
-  .hero .sub{margin-top:10px;color:rgba(255,255,255,0.92);font-size:14px}
 
-  .decor{display:block;height:6px;width:140px;margin:14px auto;border-radius:6px;background:var(--border-grad);box-shadow:0 6px 20px rgba(0,0,0,0.08);opacity:0.95}
+  /* central image container keeps aspect ratio using object-fit:contain */
+  .hero-inner{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+  .hero-img{max-width:100%;max-height:100%;object-fit:contain;border-radius:12px;box-shadow:0 18px 60px rgba(0,0,0,0.15);display:block}
+
+  /* subtle overlay to keep text readable without stretching the image */
+  .hero-overlay{position:absolute;inset:0;border-radius:18px;background:linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.18));pointer-events:none}
+
+  .hero-card{position:absolute;z-index:4;max-width:820px;text-align:center;color:white;padding:22px;border-radius:12px;background:linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.28));backdrop-filter: blur(4px)}
+  .hero h1{font-family:'Great Vibes',cursive;font-size:48px;margin:0;line-height:0.9;text-shadow:0 8px 28px rgba(0,0,0,0.46)}
+  .hero .lead{font-family:'Playfair Display',serif;font-size:18px;margin-top:8px;opacity:0.95}
+  .hero .sub{margin-top:8px;color:rgba(255,255,255,0.92);font-size:13px}
+
+  .decor{display:block;height:6px;width:120px;margin:12px auto;border-radius:6px;background:var(--border-grad);box-shadow:0 6px 20px rgba(0,0,0,0.08);opacity:0.95}
 
   .section-title{display:flex;align-items:center;gap:12px;margin:28px 0 8px}
   .sw{width:12px;height:46px;border-radius:8px;background:var(--accent);box-shadow:0 8px 16px rgba(0,0,0,0.08)}
@@ -60,18 +62,22 @@
   .panel p{margin:0 0 14px 0;line-height:1.5;color:#333}
   .panel .close{border:0;background:transparent;color:#666;cursor:pointer;font-weight:700}
 
-  @media(max-width:900px){ .hero{height:420px} .hero h1{font-size:44px} .card img{height:220px} }
-  @media(max-width:520px){ .hero{height:300px} .hero h1{font-size:32px} .card img{height:160px} .hero-card{padding:18px} }
+  @media(max-width:900px){ .hero{height:58vh} .hero h1{font-size:40px} .card img{height:220px} }
+  @media(max-width:520px){ .hero{height:45vh} .hero h1{font-size:28px} .card img{height:160px} .hero-card{padding:14px} }
 </style>
 </head>
 <body>
 
 <div class="hero" role="img" aria-label="Sahil & Shruti smiling warmly">
-  <div class="hero-card">
-    <h1>Welcome to Our Digital Space</h1>
-    <div class="lead">A little bit of cozy, a little bit of us</div>
-    <div class="decor"></div>
-    <div class="sub">Thanks for stopping by — every photo here tells a story we love</div>
+  <div class="hero-inner">
+    <img src="1.jpeg" alt="Welcome photo" class="hero-img" id="heroImg">
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="hero-card">
+      <h1>Welcome to Our Digital Space</h1>
+      <div class="lead">A little bit of cozy, a little bit of us</div>
+      <div class="decor"></div>
+      <div class="sub">Thanks for stopping by — every photo here tells a story we love</div>
+    </div>
   </div>
 </div>
 
@@ -83,6 +89,7 @@
   <div class="section-desc">Moments from the ceremony and the tiny private pauses after the vows.</div>
 
   <div class="grid">
+    <!-- All 20 cards included below -->
     <div class="card" data-title="2. First Walk" data-long="Hand in hand, we walked where the light felt soft. Cameras laughed at our awkward poses, and that laugh is still ours.">
       <img src="2.jpeg" alt="2">
       <div class="caption"><div class="title">First Walk</div><div class="hint">A gentle start to our story</div><button>Read more</button></div>
@@ -194,9 +201,53 @@
 </div>
 
 <script>
+// extract prominent colors to build the page border gradient, then set CSS variable
+function getProminentColorsFromImage(img, count = 4) {
+  const canvas = document.createElement('canvas')
+  const ctx = canvas.getContext('2d')
+  const w = 80
+  const h = Math.max(40, Math.round(img.naturalHeight * (w / img.naturalWidth)))
+  canvas.width = w
+  canvas.height = h
+  ctx.drawImage(img, 0, 0, w, h)
+  try {
+    const data = ctx.getImageData(0, 0, w, h).data
+    const map = new Map()
+    for (let i = 0; i < data.length; i += 4) {
+      const r = data[i]
+      const g = data[i + 1]
+      const b = data[i + 2]
+      const a = data[i + 3]
+      if (a < 125) continue
+      const key = (r >> 4) + ',' + (g >> 4) + ',' + (b >> 4)
+      map.set(key, (map.get(key) || 0) + 1)
+    }
+    const sorted = Array.from(map.entries()).sort((a,b)=>b[1]-a[1]).slice(0,count)
+    return sorted.map(([k])=>{const [rr,gg,bb]=k.split(',').map(x=>parseInt(x)<<4);return `rgb(${rr},${gg},${bb})`})
+  } catch (e) {
+    return ['#a8c7f0','#fffdf7','#f7d9d0','#ffd9b3']
+  }
+}
+
+function applyBorderFromHeroImg(){
+  const img = document.getElementById('heroImg')
+  if (!img || !img.complete) {
+    img.addEventListener('load', applyBorderFromHeroImg)
+    return
+  }
+  const cols = getProminentColorsFromImage(img,4)
+  const grad = `linear-gradient(90deg, ${cols.join(',')})`
+  document.documentElement.style.setProperty('--border-grad', grad)
+}
+
+applyBorderFromHeroImg()
+
+// modal logic
 document.addEventListener('click', function(e){
-  if (e.target.matches('.card button')){
+  if (e.target.matches('.card button') || e.target.closest('.card')){
+    // if clicked on card or button, open modal for that card
     const card = e.target.closest('.card')
+    if (!card) return
     document.getElementById('panelTitle').textContent = card.dataset.title || 'Memory'
     document.getElementById('panelText').textContent = card.dataset.long || ''
     const p = document.getElementById('panel')
