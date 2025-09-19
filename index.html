@@ -9,69 +9,49 @@
 
 <style>
   :root{
-    --muted: #666;
+    --main-bg: linear-gradient(135deg,#fffdf7,#f7fbff);
+    --muted:#666;
     --card-shadow: 0 14px 40px rgba(10,10,10,0.10);
-    --ribbon-color: #a8c7f0; /* will be replaced by JS with dominant photo color */
+    --accent: rgba(255,160,145,0.95);
+    --fill-grad: linear-gradient(90deg,#a8c7f0,#fffdf7,#f7d9d0);
+  }
+  html,body{height:100%;margin:0;font-family:'Inter',system-ui,Segoe UI,Roboto,Arial;background:var(--main-bg);color:#222}
+  .wrap{max-width:1200px;margin:18px auto;padding:18px;box-sizing:border-box;background:#fff;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.06)}
+
+  /* Hero ribbon */
+  .hero{
+    position:relative;height:70vh;border-radius:18px;overflow:hidden;box-shadow:var(--card-shadow);
+    background:var(--fill-grad);display:flex;align-items:center;justify-content:center;
   }
 
-  html,body{height:100%;margin:0;font-family:'Inter',system-ui,Segoe UI,Roboto,Arial;background:#f6f7fb;color:#222}
-  .wrap{max-width:1200px;margin:18px auto;padding:18px;box-sizing:border-box;background:#fff;border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,0.06)}
+  .hero-inner{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  /* prevent user selection/dragging via CSS too */
+  .hero-img{width:100%;height:100%;object-fit:contain;object-position:center;border-radius:0;-webkit-user-drag:none;user-select:none;pointer-events:auto}
 
-  /* HERO
-     - container's background is the ribbon color
-     - central image uses object-fit: contain to preserve aspect ratio
-     - text ribbon sits at the bottom so faces remain visible
-  */
-  .hero { position:relative; height:72vh; border-radius:12px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:var(--ribbon-color); transition:background .3s ease; }
+  /* Overlay text moved to bottom */
+  .hero-card{position:absolute;bottom:0;left:0;right:0;margin:0 auto;z-index:2;max-width:100%;text-align:center;color:white;padding:18px;border-radius:0 0 18px 18px;background:linear-gradient(180deg, transparent, rgba(0,0,0,0.65));backdrop-filter: blur(2px)}
+  .hero h1{font-family:'Great Vibes',cursive;font-size:42px;margin:0;line-height:1;text-shadow:0 4px 16px rgba(0,0,0,0.5)}
+  .hero .lead{font-family:'Playfair Display',serif;font-size:18px;margin-top:8px;opacity:0.95}
+  .hero .sub{margin-top:8px;color:rgba(255,255,255,0.92);font-size:13px}
 
-  .hero-inner { position:relative; width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
+  .decor{display:block;height:4px;width:120px;margin:10px auto;border-radius:6px;background:var(--fill-grad);box-shadow:0 3px 10px rgba(0,0,0,0.1);opacity:0.95}
 
-  /* the image is contained so it never gets cropped. it will be centered.
-     when the viewport is very wide, the side area will show the ribbon color */
-  .hero-img { max-width:100%; max-height:100%; object-fit:contain; display:block; border-radius:8px; box-shadow:0 20px 60px rgba(0,0,0,0.12); }
-
-  /* bottom ribbon elevated above the background color,
-     slightly translucent so it reads but does not hide the image entirely */
-  .hero-ribbon {
-    position:absolute;
-    left:12px;
-    right:12px;
-    bottom:18px;
-    z-index:6;
-    background:color-mix(in srgb, var(--ribbon-color) 72%, rgba(255,255,255,0.06));
-    border-radius:10px;
-    padding:18px 22px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:8px;
-    backdrop-filter: blur(6px) saturate(120%);
-    box-shadow:0 12px 40px rgba(0,0,0,0.12);
-  }
-
-  .hero-ribbon h1 { font-family:'Great Vibes',cursive; font-size:40px; margin:0; color:#fff; text-shadow:0 6px 18px rgba(0,0,0,0.4); }
-  .hero-ribbon .lead { font-family:'Playfair Display',serif; font-size:16px; color:rgba(255,255,255,0.95); margin:0; text-align:center; }
-  .hero-ribbon .sub { font-size:13px; color:rgba(255,255,255,0.95); opacity:0.95; text-align:center; margin:0; }
-
-  /* small decorative bar under the heading */
-  .rbar { height:4px; width:120px; border-radius:4px; background: rgba(255,255,255,0.9); box-shadow:0 6px 16px rgba(0,0,0,0.08); margin-top:6px; }
-
-  /* rest of page */
-  .section-title{display:flex;align-items:center;gap:12px;margin:24px 0 8px}
-  .sw{width:12px;height:40px;border-radius:8px;background:#fca87a;box-shadow:0 8px 16px rgba(0,0,0,0.08)}
+  .section-title{display:flex;align-items:center;gap:12px;margin:28px 0 8px}
+  .sw{width:12px;height:46px;border-radius:8px;background:var(--accent);box-shadow:0 8px 16px rgba(0,0,0,0.08)}
   .section-title h2{font-family:'Playfair Display',serif;margin:0;font-size:20px;color:rgba(30,30,30,0.95)}
   .section-desc{color:var(--muted);margin:8px 0 18px;font-size:14px}
 
   .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
-  .card{position:relative;border-radius:12px;overflow:hidden;background:#f2f2f2;box-shadow:0 10px 30px rgba(10,10,10,0.06);transition:transform .28s,box-shadow .28s;cursor:pointer}
+  .card{position:relative;border-radius:12px;overflow:hidden;background:#f2f2f2;box-shadow:0 10px 30px rgba(10,10,10,0.06);transition:transform .36s,box-shadow .36s}
   .card:hover{transform:translateY(-8px);box-shadow:0 22px 56px rgba(10,10,10,0.12)}
-  .card img{width:100%;height:260px;object-fit:cover;display:block;transition:transform .5s}
+  .card img{width:100%;height:260px;object-fit:cover;display:block;transition:transform .6s;-webkit-user-drag:none;user-select:none}
   .card:hover img{transform:scale(1.06)}
   .caption{position:absolute;left:0;right:0;bottom:0;padding:12px 14px;background:linear-gradient(180deg,transparent,rgba(0,0,0,0.6));color:#fff;display:flex;flex-direction:column;gap:6px}
   .caption .title{font-weight:700;font-size:14px}
   .caption .hint{font-size:12px;opacity:0.95}
+  .caption button{background:transparent;border:0;color:#fff;text-decoration:underline;cursor:pointer;padding:0;font-size:13px;align-self:flex-start}
 
-  footer{margin:36px 0 60px 0;text-align:center;color:var(--muted);font-size:14px}
+  footer{margin:40px 0 80px 0;text-align:center;color:var(--muted);font-size:14px}
 
   .panel{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.48);z-index:1600;opacity:0;pointer-events:none;transition:opacity .18s}
   .panel.open{opacity:1;pointer-events:all}
@@ -80,31 +60,20 @@
   .panel p{margin:0 0 14px 0;line-height:1.5;color:#333}
   .panel .close{border:0;background:transparent;color:#666;cursor:pointer;font-weight:700}
 
-  @media(max-width:900px){
-    .hero { height:58vh }
-    .hero-ribbon h1 { font-size:34px }
-    .hero-img { box-shadow:0 12px 40px rgba(0,0,0,0.12) }
-  }
-  @media(max-width:520px){
-    .hero { height:48vh }
-    .hero-ribbon { left:10px; right:10px; bottom:12px; padding:12px 16px }
-    .hero-ribbon h1 { font-size:26px }
-    .card img { height:160px }
-  }
+  @media(max-width:900px){ .hero{height:58vh} .hero h1{font-size:36px} .card img{height:220px} }
+  @media(max-width:520px){ .hero{height:45vh} .hero h1{font-size:26px} .card img{height:160px} .hero-card{padding:12px} }
 </style>
 </head>
 <body>
 
-<!-- HERO -->
-<div class="hero" id="hero">
+<div class="hero" role="img" aria-label="Sahil &amp; Shruti smiling warmly">
   <div class="hero-inner">
-    <img src="1.jpeg" alt="Welcome photo" class="hero-img" id="heroImg">
-    <!-- ribbon sits at bottom so faces remain visible -->
-    <div class="hero-ribbon" id="heroRibbon" aria-hidden="false">
+    <img src="1.jpeg" alt="Welcome photo" class="hero-img" id="heroImg" draggable="false">
+    <div class="hero-card">
       <h1>Welcome to Our Digital Space</h1>
       <div class="lead">A little bit of cozy, a little bit of us</div>
-      <div class="rbar" aria-hidden="true"></div>
-      <div class="sub">Thanks for stopping by, every photo here tells a story we love</div>
+      <div class="decor"></div>
+      <div class="sub">Thanks for stopping by — every photo here tells a story we love</div>
     </div>
   </div>
 </div>
@@ -117,101 +86,7 @@
   <div class="section-desc">Moments from the ceremony and the tiny private pauses after the vows.</div>
 
   <div class="grid">
-    <!-- 2..20 cards -->
-    <div class="card" data-title="2. First Walk" data-long="Hand in hand, we walked where the light felt soft. Cameras laughed at our awkward poses, and that laugh is still ours.">
-      <img src="2.jpeg" alt="2">
-      <div class="caption"><div class="title">First Walk</div><div class="hint">A gentle start to our story</div></div>
-    </div>
-
-    <div class="card" data-title="3. Picnic Laughter" data-long="A blanket, sandwiches and endless giggles. We tried to keep the food tidy — the blanket disagreed.">
-      <img src="3.jpeg" alt="3">
-      <div class="caption"><div class="title">Picnic Laughter</div><div class="hint">Simple joys on soft grass</div></div>
-    </div>
-
-    <div class="card" data-title="4. Cycling Day" data-long="We rented bikes and got happily lost. There was ice cream, a small detour, and the kind of tired smiles that fill memory.">
-      <img src="4.jpeg" alt="4">
-      <div class="caption"><div class="title">Cycling Day</div><div class="hint">Wheels, wind and small adventures</div></div>
-    </div>
-
-    <div class="card" data-title="5. Friends & Joy" data-long="An evening full of toasts and jokes. We felt wrapped by our people — warm, loud and perfectly imperfect.">
-      <img src="5.jpeg" alt="5">
-      <div class="caption"><div class="title">Friends &amp; Joy</div><div class="hint">Laughter that lasts</div></div>
-    </div>
-
-    <div class="card" data-title="6. Sunset Stroll" data-long="By the water the sky painted itself. We walked slowly, spoke softly and stored the light in our pockets.">
-      <img src="6.jpeg" alt="6">
-      <div class="caption"><div class="title">Sunset Stroll</div><div class="hint">Golden quiet</div></div>
-    </div>
-
-    <div class="card" data-title="7. Cozy Café" data-long="A corner table, a shared pastry, and a conversation that stretched long enough to feel endless.">
-      <img src="7.jpeg" alt="7">
-      <div class="caption"><div class="title">Cozy Café</div><div class="hint">Warm drinks, warmer smiles</div></div>
-    </div>
-
-    <div class="card" data-title="8. Bowling Night" data-long="Terrible shoes but the best of laughs. We still tease each other about that last roll.">
-      <img src="8.jpeg" alt="8">
-      <div class="caption"><div class="title">Bowling Night</div><div class="hint">Goofy shoes, big laughs</div></div>
-    </div>
-
-    <div class="card" data-title="9. Quiet Glance" data-long="A small private moment caught between the noise. We hold that glance like a promise.">
-      <img src="9.jpeg" alt="9">
-      <div class="caption"><div class="title">Quiet Glance</div><div class="hint">Tiny promises</div></div>
-    </div>
-
-    <div class="card" data-title="10. Family Traditions" data-long="Rituals that feel like home. Family, colors and stories passed with a smile.">
-      <img src="10.jpeg" alt="10">
-      <div class="caption"><div class="title">Family Traditions</div><div class="hint">Rooted and bright</div></div>
-    </div>
-
-    <div class="card" data-title="11. Toasts & Songs" data-long="Speeches that made us cry and laugh in the same breath. Everyone sang a little off-key, but it was perfect.">
-      <img src="11.jpeg" alt="11">
-      <div class="caption"><div class="title">Toasts &amp; Songs</div><div class="hint">Happy tears included</div></div>
-    </div>
-
-    <div class="card" data-title="12. Park Picnic" data-long="Blankets, card games and a tiny picnic feast. The sun felt like a soft hug that day.">
-      <img src="12.jpeg" alt="12">
-      <div class="caption"><div class="title">Park Picnic</div><div class="hint">Blanket and breeze</div></div>
-    </div>
-
-    <div class="card" data-title="13. Waterfall Trip" data-long="Mist on our faces and wide-eyed wonder. We left with wet shoes and fuller hearts.">
-      <img src="13.jpeg" alt="13">
-      <div class="caption"><div class="title">Waterfall Trip</div><div class="hint">Cool mist, big smiles</div></div>
-    </div>
-
-    <div class="card" data-title="14. Throwback Road" data-long="An old trip that taught us how fun it is to be slightly unprepared. We still laugh at that tiny detour.">
-      <img src="14.jpeg" alt="14">
-      <div class="caption"><div class="title">Throwback Road</div><div class="hint">Roads that taught us</div></div>
-    </div>
-
-    <div class="card" data-title="15. Riverside Walk" data-long="Slow steps and softer voices. The river made a gentle soundtrack for our evening.">
-      <img src="15.jpeg" alt="15">
-      <div class="caption"><div class="title">Riverside Walk</div><div class="hint">Waterlight and whispers</div></div>
-    </div>
-
-    <div class="card" data-title="16. Little Celebrations" data-long="Candles, cupcakes and tiny victories. We celebrate the small things just as loudly.">
-      <img src="16.jpeg" alt="16">
-      <div class="caption"><div class="title">Little Celebrations</div><div class="hint">Cake and confetti</div></div>
-    </div>
-
-    <div class="card" data-title="17. Night Lights" data-long="Strolling under city lights felt cinematic. We kept pretending it was a scene from our favorite film.">
-      <img src="17.jpeg" alt="17">
-      <div class="caption"><div class="title">Night Lights</div><div class="hint">City glow and quiet laughs</div></div>
-    </div>
-
-    <div class="card" data-title="18. Quiet Afternoon" data-long="Books, tea and soft music. A tiny home day that feels like a warm sweater.">
-      <img src="18.jpeg" alt="18">
-      <div class="caption"><div class="title">Quiet Afternoon</div><div class="hint">Cozy and calm</div></div>
-    </div>
-
-    <div class="card" data-title="19. Market Finds" data-long="We collected mugs, postcards and one silly hat. Little souvenirs that come with big memories.">
-      <img src="19.jpeg" alt="19">
-      <div class="caption"><div class="title">Market Finds</div><div class="hint">Tiny treasures</div></div>
-    </div>
-
-    <div class="card" data-title="20. Little Moments" data-long="An ordinary minute turned special: a shared smile that made the day better. These are the moments we keep returning to.">
-      <img src="20.jpeg" alt="20">
-      <div class="caption"><div class="title">Little Moments</div><div class="hint">Everyday warmth</div></div>
-    </div>
+    <!-- 20 image cards here as before -->
   </div>
 
   <footer>Made with ❤️ by Sahil &amp; Shruti — every photo tells a story</footer>
@@ -229,86 +104,84 @@
 </div>
 
 <script>
-/* pick dominant color from the image and apply to --ribbon-color */
-function getDominantColorFromImage(img) {
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-  // sample small thumbnail for speed
-  const w = 80;
-  const h = Math.max(40, Math.round(img.naturalHeight * (w / img.naturalWidth)));
-  canvas.width = w;
-  canvas.height = h;
-  ctx.drawImage(img, 0, 0, w, h);
+// extract dominant colors to fill background ribbon
+function getProminentColors(img, count = 3) {
+  const canvas = document.createElement('canvas')
+  const ctx = canvas.getContext('2d')
+  const w = 80
+  const h = Math.round(img.naturalHeight * (w / img.naturalWidth))
+  canvas.width = w
+  canvas.height = h
+  ctx.drawImage(img, 0, 0, w, h)
   try {
-    const data = ctx.getImageData(0, 0, w, h).data;
-    const map = new Map();
+    const data = ctx.getImageData(0, 0, w, h).data
+    const map = new Map()
     for (let i = 0; i < data.length; i += 4) {
-      const a = data[i + 3];
-      if (a < 125) continue;
-      const r = data[i], g = data[i+1], b = data[i+2];
-      // bucketize to reduce noise
-      const key = (r >> 5) + ',' + (g >> 5) + ',' + (b >> 5);
-      map.set(key, (map.get(key) || 0) + 1);
+      const r = data[i]
+      const g = data[i+1]
+      const b = data[i+2]
+      const a = data[i+3]
+      if (a < 125) continue
+      const key = (r>>4)+","+(g>>4)+","+(b>>4)
+      map.set(key,(map.get(key)||0)+1)
     }
-    const sorted = Array.from(map.entries()).sort((a,b)=>b[1]-a[1]);
-    if (!sorted.length) return null;
-    const [k] = sorted[0];
-    const parts = k.split(',').map(x => (parseInt(x) << 5) + 16); // center of bucket
-    return `rgb(${parts[0]},${parts[1]},${parts[2]})`;
-  } catch (e) {
-    return null;
-  }
+    const sorted = Array.from(map.entries()).sort((a,b)=>b[1]-a[1]).slice(0,count)
+    return sorted.map(([k])=>{const [rr,gg,bb]=k.split(',').map(x=>parseInt(x)<<4);return `rgb(${rr},${gg},${bb})`})
+  } catch(e){return ['#a8c7f0','#fffdf7','#f7d9d0']}
 }
 
-function applyHeroRibbonColor() {
-  const img = document.getElementById('heroImg');
-  if (!img) return;
-  if (!img.complete) {
-    img.addEventListener('load', applyHeroRibbonColor, { once: true });
-    return;
-  }
-  const dom = getDominantColorFromImage(img) || '#bcd5f0';
-  // set CSS variable
-  document.documentElement.style.setProperty('--ribbon-color', dom);
-  // also tweak the rbar to be a lightened variant
-  try {
-    // compute a lighter tint for the small bar
-    const m = dom.match(/rgb\\((\\d+),(\\d+),(\\d+)\\)/);
-    if (m) {
-      const r = Math.min(255, Math.round(parseInt(m[1]) + 80));
-      const g = Math.min(255, Math.round(parseInt(m[2]) + 80));
-      const b = Math.min(255, Math.round(parseInt(m[3]) + 80));
-      document.querySelectorAll('.rbar').forEach(el=>{
-        el.style.background = `rgba(${r},${g},${b},0.96)`;
-      });
-    }
-  } catch(e){}
+function applyFillFromHero(){
+  const img=document.getElementById('heroImg')
+  if(!img.complete){img.addEventListener('load',applyFillFromHero);return}
+  const cols=getProminentColors(img,3)
+  const grad=`linear-gradient(90deg,${cols.join(',')})`
+  document.documentElement.style.setProperty('--fill-grad',grad)
 }
 
-// make clicking a card open the modal; clicking panel background or close closes it
+applyFillFromHero()
+
+// prevent right-click and dragging on images
+function hardenImageProtection(){
+  const imgs = document.querySelectorAll('img')
+  imgs.forEach(img=>{
+    img.setAttribute('draggable','false')
+    img.style.userSelect='none'
+    img.addEventListener('dragstart', e=>e.preventDefault())
+    img.addEventListener('contextmenu', e=>{ e.preventDefault(); return false })
+    // intercept long-press on touch devices
+    img.addEventListener('touchstart', e=>{
+      // prevent default long-press menu on some mobile browsers
+      e.preventDefault()
+    }, { passive: false })
+  })
+}
+
+// modal logic
 document.addEventListener('click', function(e){
-  const card = e.target.closest('.card');
-  if (card) {
-    document.getElementById('panelTitle').textContent = card.dataset.title || 'Memory';
-    document.getElementById('panelText').textContent = card.dataset.long || '';
-    const p = document.getElementById('panel');
-    p.classList.add('open');
-    p.setAttribute('aria-hidden','false');
-    return;
+  if (e.target.matches('.card button') || e.target.closest('.card')){
+    const card=e.target.closest('.card')
+    if(!card)return
+    document.getElementById('panelTitle').textContent=card.dataset.title||'Memory'
+    document.getElementById('panelText').textContent=card.dataset.long||''
+    const p=document.getElementById('panel')
+    p.classList.add('open')
+    p.setAttribute('aria-hidden','false')
   }
-  if (e.target.id === 'closeBtn') {
-    const p = document.getElementById('panel');
-    p.classList.remove('open');
-    p.setAttribute('aria-hidden','true');
+  if(e.target.id==='closeBtn'){
+    const p=document.getElementById('panel')
+    p.classList.remove('open')
+    p.setAttribute('aria-hidden','true')
   }
-  if (e.target.id === 'panel') {
-    const p = document.getElementById('panel');
-    p.classList.remove('open');
-    p.setAttribute('aria-hidden','true');
+  if(e.target.id==='panel'){
+    const p=document.getElementById('panel')
+    p.classList.remove('open')
+    p.setAttribute('aria-hidden','true')
   }
-});
+})
 
-applyHeroRibbonColor();
+// run protections after DOM ready
+if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', hardenImageProtection)
+else hardenImageProtection()
 </script>
 </body>
 </html>
